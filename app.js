@@ -1,5 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
+var methodOverride = require('method-override')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
@@ -32,6 +33,9 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+//method override middleware
+app.use(methodOverride('_method'));
+
 //index route
 app.get('/', (req, res) => {
   const title = 'Welcome';
@@ -45,9 +49,33 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
+//see ideas route
+app.get('/ideas', (req,res) => {
+  Idea.find({})
+  .sort({date:'desc'})
+  .then( ideas => {
+    res.render('ideas/index', {
+      ideas:ideas
+    });
+  });
+});
+
 //add an idea route
 app.get('/ideas/add', (req, res) => {
   res.render('ideas/add');
+});
+
+//edit ideas
+app.get('/ideas/edit/:id', (req, res) => {
+  Idea.findOne({
+    _id:req.params.id
+  })
+  .then(idea => {
+      res.render('ideas/edit',{
+        idea:idea
+      });
+  })
+
 });
 
 //catch post request from /ideas
@@ -67,6 +95,29 @@ app.post('/ideas', (req, res) => {
     });
   }
   else {
-    res.send('passed');
+    const newUser = {
+      title: req.body.title,
+      details: req.body.details
+    }
+    new Idea(newUser)
+    .save()
+    .then( idea => {
+      res.redirect('/ideas');
+    });
   }
 });
+
+app.put('/ideas/:id', (req, res) => {
+  Idea.findOne({
+    _id: req.params.id
+  })
+  .then (idea => {
+    idea.title = req.body.title;
+    idea.details = req.body.details;
+
+    idea.save()
+    .then( idea => {
+      res.redirect('/ideas')
+    })
+  });
+})

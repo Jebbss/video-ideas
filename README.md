@@ -12,3 +12,6 @@ Made with
 
 ### What I've learned
 Server side rendering and template with the help of handlebars.
+
+TODO
+- [ ] Do put requests with AJAX
