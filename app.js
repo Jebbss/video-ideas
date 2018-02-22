@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const exphbs = require('express-handlebars');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
@@ -21,10 +22,6 @@ mongoose.connect(dbName, {})
 .then(() => console.log('MongoDB connected'))
 .catch( err => console.log(err));
 
-// load Idea Model
-require('./models/Idea');
-const Idea = mongoose.model('ideas');
-
 //handlebars middleware
 app.engine('handlebars', exphbs({
   defaultLayout: 'main'
@@ -34,6 +31,9 @@ app.set('view engine', 'handlebars');
 //Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+//public folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 //method override middleware
 app.use(methodOverride('_method'));
@@ -69,86 +69,10 @@ app.get('/about', (req, res) => {
   res.render('about');
 });
 
-//see ideas route
-app.get('/ideas', (req,res) => {
-  Idea.find({})
-  .sort({date:'desc'})
-  .then( ideas => {
-    res.render('ideas/index', {
-      ideas:ideas
-    });
-  });
-});
+//load routes
+const ideas = require('./routes/ideas');
+const users = require('./routes/users');
 
-//add an idea route
-app.get('/ideas/add', (req, res) => {
-  res.render('ideas/add');
-});
-
-//edit ideas
-app.get('/ideas/edit/:id', (req, res) => {
-  Idea.findOne({
-    _id:req.params.id
-  })
-  .then(idea => {
-      res.render('ideas/edit',{
-        idea:idea
-      });
-  })
-
-});
-
-//catch post request from /ideas
-app.post('/ideas', (req, res) => {
-  let errors = [];
-  if(!req.body.title) {
-    errors.push({text: 'Please add title'})
-  }
-  if(!req.body.details) {
-    errors.push({text: 'Please add details'})
-  }
-  if(errors.length > 0){
-    res.render('ideas/add', {
-      errors: errors,
-      title: req.body.title,
-      details: req.body.details
-    });
-  }
-  else {
-    const newUser = {
-      title: req.body.title,
-      details: req.body.details
-    }
-    new Idea(newUser)
-    .save()
-    .then( idea => {
-      req.flash('success_msg', 'Idea added');
-      res.redirect('/ideas');
-    });
-  }
-});
-
-app.put('/ideas/:id', (req, res) => {
-  Idea.findOne({
-    _id: req.params.id
-  })
-  .then (idea => {
-    idea.title = req.body.title;
-    idea.details = req.body.details;
-
-    idea.save()
-    .then( idea => {
-      req.flash('success_msg', 'Idea updated');
-      res.redirect('/ideas')
-    })
-  });
-});
-
-//delete idea
-app.delete('/ideas/:id', (req, res) => {
-  Idea.remove({_id: req.params.id})
-  .then( () => {
-    req.flash('success_msg', 'Idea removed');
-    res.redirect('/ideas')
-  });
-});
+// use routes
+app.use('/ideas', ideas);
+app.use('/users', users);
