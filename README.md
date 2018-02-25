@@ -1,7 +1,7 @@
-Caution! this is a work in progress
-
 # Video Ideas
 A web app for creators to jot down their ideas
+
+[Live site](https://jeb-vidjot.herokuapp.com/)
 
 
 Made with
@@ -9,9 +9,14 @@ Made with
 - [Handlebars](http://handlebarsjs.com/)
 - [Express](https://expressjs.com/)
 - [Node](https://nodejs.org/)
+- [Mongo](https://www.mongodb.com/)
+- [PassportJS](http://www.passportjs.org/)
+- [Bcrypt](https://github.com/kelektiv/node.bcrypt.js)
+- :heart:
 
 ### What I've learned
-Server side rendering and template with the help of handlebars.
+- Server side rendering and template with the help of handlebars.
+- Session handling and authentication
 
 TODO
-- [ ] Do put requests with AJAX
+- [ ] Do put requests with AJAX 
