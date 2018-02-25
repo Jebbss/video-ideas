@@ -1,6 +1,7 @@
 
 node_modules
 vidjot-dev
+config
 .env
 data/
 .idea/
