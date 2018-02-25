@@ -3,7 +3,6 @@ A web app for creators to jot down their ideas
 
 [Live site](https://jeb-vidjot.herokuapp.com/)
 
-
 Made with
 - [Bootstrap](https://getbootstrap.com/)
 - [Handlebars](http://handlebarsjs.com/)
@@ -19,4 +18,4 @@ Made with
 - Session handling and authentication
 
 TODO
-- [ ] Do put requests with AJAX 
+- [ ] Do put requests with AJAX
