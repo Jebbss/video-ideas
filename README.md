@@ -19,3 +19,12 @@ Made with
 
 TODO
 - [ ] Do put requests with AJAX
+
+Run locally unix
+```
+git clone https://github.com/Jebbss/video-ideas.git
+npm install
+mkdir vidjot-dev
+mongod --port 27017 --dbpath=./vidjot-dev
+npm start
+```
