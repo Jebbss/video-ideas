@@ -1,9 +1,9 @@
-{{#each ideas}}
+{{#each ideas}}d
   <div class="card card-body mb-2">
     <h4>{{title}}</h4>
     <p>{{details}}</p>
-    <a class="btn btn-dark btn-block mb-2"href="/ideas/edit/{{id}}">Edit</a>
-    <form class="" action="/ideas/{{id}}?_method=DELETE" method="post">
+    <a class="btn btn-dark btn-block mb-2"href="/ideas/edit/{{_id}}">Edit</a>
+    <form class="" action="/ideas/{{_id}}?_method=DELETE" method="post">
       <input type="hidden" name="_method" value="DELETE">
       <input type="submit" class="btn btn-danger btn-block" name="" value="Delete">
     </form>

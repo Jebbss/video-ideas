@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const exphbs = require('express-handlebars');
+const { engine } = require('express-handlebars');
 const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -25,7 +25,7 @@ mongoose.connect(db.mongoURI, {})
 .catch( err => console.log(err));
 
 //handlebars middleware
-app.engine('handlebars', exphbs({
+app.engine('handlebars', engine({
   defaultLayout: 'main'
 }));
 app.set('view engine', 'handlebars');
